@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeRome — Build Your Empire</title>
+<meta name="description" content="The AI trading psychology coach that analyzes your behavior — not the market. Join the early access list.">
+<meta property="og:title" content="TradeRome — Build Your Empire">
+<meta property="og:description" content="Rome wasn't built in a day. Neither is your trading career.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;500;600&family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#04090F;--bg2:#07111C;--bg3:#0B1828;--bg4:#102033;
+  --card:#081422;--card2:#0C1B2E;
+  --tiff:#0BC8D0;--tiff2:#34D8E0;--tiff3:rgba(11,200,208,.13);
+  --pink:#FF3DAA;--pink2:#FF6BC0;--pink3:rgba(255,61,170,.13);
+  --gold:#FFD166;--gold2:rgba(255,209,102,.13);
+  --win:#0BC8D0;--loss:#FF6B8A;
+  --txt:#D8EEF8;--txt2:#5A88A0;--txt3:#234055;
+  --b:rgba(11,200,208,.08);--b2:rgba(11,200,208,.16);--b3:rgba(11,200,208,.28);
+  --mono:'DM Mono',monospace;--body:'Outfit',sans-serif;
+  --display:'Syne',sans-serif;--cinzel:'Cinzel',serif;--deco:'Cinzel Decorative',serif
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--body);overflow-x:hidden;line-height:1.6}
+.amb-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.amb1{position:absolute;top:-20%;left:-10%;width:60vw;height:60vw;background:radial-gradient(circle,rgba(11,200,208,.07) 0%,transparent 60%)}
+.amb2{position:absolute;bottom:-20%;right:-10%;width:50vw;height:50vw;background:radial-gradient(circle,rgba(255,61,170,.05) 0%,transparent 60%)}
+.container{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.fade-up{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(4,9,15,.75);backdrop-filter:blur(20px);border-bottom:1px solid var(--b)}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-eagle{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--tiff),var(--pink));display:flex;align-items:center;justify-content:center;font-size:14px}
+.nav-name{font-family:var(--deco);font-size:14px;font-weight:700;color:var(--txt)}
+.nav-links{display:flex;align-items:center;gap:6px}
+.nav-link{font-size:13px;color:var(--txt2);padding:6px 12px;border-radius:6px;text-decoration:none;transition:color .15s}
+.nav-link:hover{color:var(--txt)}
+.nav-cta{background:linear-gradient(135deg,var(--tiff),var(--pink));color:#fff;font-size:12px;font-weight:600;padding:8px 20px;border-radius:7px;cursor:pointer;text-decoration:none;border:none;font-family:var(--body);letter-spacing:.02em}
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 0 60px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-label{font-family:var(--cinzel);font-size:11px;letter-spacing:.28em;color:var(--tiff);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-label::before{content:'';width:24px;height:1px;background:var(--tiff)}
+.hero-h1{font-family:var(--display);font-size:clamp(38px,5vw,64px);font-weight:800;line-height:1.1;letter-spacing:-.04em;margin-bottom:12px}
+.hero-h1 span{background:linear-gradient(135deg,var(--tiff),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-h2{font-family:var(--cinzel);font-size:clamp(16px,2.2vw,24px);font-weight:400;color:var(--txt2);margin-bottom:24px;letter-spacing:.06em;line-height:1.4}
+.hero-sub{font-size:15px;color:var(--txt2);line-height:1.7;max-width:440px;margin-bottom:36px}
+.hero-form{display:flex;gap:8px;max-width:440px;flex-wrap:wrap}
+.hero-input{flex:1;min-width:200px;background:rgba(255,255,255,.05);border:1px solid var(--b2);border-radius:9px;padding:12px 16px;font-size:14px;color:var(--txt);font-family:var(--body);outline:none;transition:border-color .15s}
+.hero-input:focus{border-color:var(--tiff)}
+.hero-input::placeholder{color:var(--txt3)}
+.hero-btn{background:linear-gradient(135deg,var(--tiff),var(--pink));color:#fff;font-size:13px;font-weight:600;padding:12px 24px;border-radius:9px;border:none;cursor:pointer;white-space:nowrap;box-shadow:0 4px 20px rgba(11,200,208,.25);transition:all .15s;font-family:var(--body)}
+.hero-btn:hover{box-shadow:0 6px 28px rgba(11,200,208,.4);transform:translateY(-1px)}
+.hero-note{font-size:11px;color:var(--txt3);margin-top:10px}
+.hero-note span{color:var(--tiff)}
+.hero-stats{display:flex;gap:28px;margin-top:36px;flex-wrap:wrap}
+.hero-stat-num{font-family:var(--mono);font-size:22px;font-weight:500;line-height:1}
+.hero-stat-lbl{font-size:11px;color:var(--txt3);margin-top:3px}
+.preview-wrap{position:relative}
+.preview-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse at center,rgba(11,200,208,.08) 0%,transparent 70%);pointer-events:none}
+.preview-card{background:var(--card);border:1px solid var(--b2);border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.6);transform:perspective(1000px) rotateY(-6deg) rotateX(3deg);transition:transform .5s ease}
+.preview-card:hover{transform:perspective(1000px) rotateY(-3deg) rotateX(1deg)}
+.preview-topbar{background:var(--bg2);padding:12px 16px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:8px}
+.preview-dots{display:flex;gap:5px}
+.preview-dot{width:8px;height:8px;border-radius:50%}
+.preview-title{font-family:var(--cinzel);font-size:10px;color:var(--txt3);margin-left:8px;letter-spacing:.12em}
+.preview-body{padding:14px}
+.preview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.pstat{background:var(--bg3);border-radius:8px;padding:10px;border-top:2px solid transparent}
+.pstat-val{font-family:var(--mono);font-size:16px;font-weight:500;line-height:1;margin-bottom:2px}
+.pstat-lbl{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em}
+.preview-ai{background:linear-gradient(135deg,var(--bg2),rgba(11,200,208,.05));border:1px solid var(--b2);border-radius:10px;padding:12px;margin-bottom:10px;position:relative}
+.preview-ai::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--tiff),var(--pink),transparent)}
+.pai-lbl{font-family:var(--cinzel);font-size:8px;color:var(--tiff);letter-spacing:.18em;margin-bottom:6px}
+.pai-head{font-family:var(--display);font-size:12px;color:var(--txt);margin-bottom:5px;font-weight:600}
+.pai-body{font-size:10px;color:var(--txt2);line-height:1.55}
+.pai-flags{display:flex;gap:4px;margin-top:7px;flex-wrap:wrap}
+.pf{font-size:8px;padding:2px 7px;border-radius:10px;font-weight:500}
+.pf-g{background:rgba(11,200,208,.12);color:var(--tiff);border:1px solid rgba(11,200,208,.2)}
+.pf-r{background:rgba(255,107,138,.12);color:var(--loss);border:1px solid rgba(255,107,138,.2)}
+.pf-a{background:rgba(255,209,102,.12);color:var(--gold);border:1px solid rgba(255,209,102,.2)}
+.score-rings{display:flex;gap:6px}
+.sring{flex:1;background:var(--bg3);border-radius:8px;padding:10px 8px;text-align:center}
+.sring-val{font-family:var(--mono);font-size:18px;font-weight:500;line-height:1}
+.sring-lbl{font-size:8px;color:var(--txt3);text-transform:uppercase;letter-spacing:.08em;margin-top:3px}
+.sring-bar{height:2px;background:var(--bg4);border-radius:1px;margin-top:6px;overflow:hidden}
+.sring-fill{height:100%;border-radius:1px}
+.marquee-wrap{overflow:hidden;border-top:1px solid var(--b);border-bottom:1px solid var(--b);background:var(--bg2);padding:14px 0;position:relative;z-index:1}
+.marquee-track{display:flex;animation:scroll 30s linear infinite}
+.marquee-item{white-space:nowrap;padding:0 28px;font-family:var(--cinzel);font-size:11px;letter-spacing:.14em;color:var(--txt3);display:flex;align-items:center;gap:14px}
+.marquee-dot{width:4px;height:4px;border-radius:50%;background:var(--tiff);flex-shrink:0}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+section{padding:100px 0;position:relative;z-index:1}
+.section-tag{font-family:var(--cinzel);font-size:10px;letter-spacing:.24em;color:var(--tiff);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-tag::before{content:'';width:20px;height:1px;background:var(--tiff)}
+.section-h{font-family:var(--display);font-size:clamp(28px,4vw,44px);font-weight:700;letter-spacing:-.03em;line-height:1.15;margin-bottom:16px}
+.section-h em{font-style:normal;color:var(--tiff)}
+.section-sub{font-size:16px;color:var(--txt2);line-height:1.7;max-width:520px}
+.problem{background:linear-gradient(180deg,transparent,var(--bg2),transparent);text-align:center}
+.problem-statement{font-family:var(--display);font-size:clamp(22px,3.5vw,38px);font-weight:700;letter-spacing:-.03em;line-height:1.2;max-width:680px;margin:0 auto 48px}
+.problem-statement span{color:var(--pink)}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:860px;margin:0 auto}
+.problem-card{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:24px;text-align:left;position:relative;overflow:hidden}
+.problem-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.pc-red::before{background:var(--loss)}.pc-amber::before{background:var(--gold)}.pc-tiff::before{background:var(--tiff)}
+.prob-icon{font-size:24px;margin-bottom:12px}
+.prob-h{font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:8px;letter-spacing:-.01em}
+.prob-p{font-size:13px;color:var(--txt2);line-height:1.6}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.feat-card{background:var(--card);border:1px solid var(--b);border-radius:14px;padding:28px;transition:border-color .2s,transform .2s}
+.feat-card:hover{border-color:var(--b2);transform:translateY(-2px)}
+.feat-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px}
+.fi-t{background:var(--tiff3);border:1px solid var(--b2)}
+.fi-p{background:var(--pink3);border:1px solid rgba(255,61,170,.2)}
+.fi-g{background:var(--gold2);border:1px solid rgba(255,209,102,.2)}
+.fi-b{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2)}
+.feat-h{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.02em;margin-bottom:8px}
+.feat-p{font-size:13px;color:var(--txt2);line-height:1.65}
+.feat-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.ftag{font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500}
+.ftag-t{background:var(--tiff3);color:var(--tiff2);border:1px solid var(--b2)}
+.ftag-p{background:var(--pink3);color:var(--pink2);border:1px solid rgba(255,61,170,.2)}
+.ftag-g{background:var(--gold2);color:var(--gold);border:1px solid rgba(255,209,102,.2)}
+.sneak-panel-outer{background:var(--card);border:1px solid var(--b2);border-radius:16px;overflow:hidden}
+.sneak-tabs{display:flex;border-bottom:1px solid var(--b);padding:0 20px}
+.stab{padding:12px 20px;font-family:var(--cinzel);font-size:10px;letter-spacing:.1em;cursor:pointer;color:var(--txt3);border-bottom:2px solid transparent;transition:all .15s;background:none;border-left:none;border-right:none;border-top:none}
+.stab:hover{color:var(--txt2)}.stab.on{color:var(--tiff);border-bottom-color:var(--tiff)}
+.sneak-body{display:none;padding:20px}.sneak-body.on{display:block}
+.sneak-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.ssc{background:var(--bg3);border-radius:10px;padding:14px;border-top:2px solid var(--b2)}
+.ssc-lbl{font-family:var(--cinzel);font-size:8px;color:var(--txt3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.ssc-val{font-family:var(--mono);font-size:20px;font-weight:500}
+.sneak-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sneak-sub-panel{background:var(--bg2);border:1px solid var(--b);border-radius:10px;overflow:hidden}
+.sp-head{padding:12px 16px;border-bottom:1px solid var(--b);font-family:var(--cinzel);font-size:10px;color:var(--txt2);letter-spacing:.1em}
+.sp-body{padding:14px}
+.ebar{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:11px;color:var(--txt2)}
+.ebar-name{width:90px;flex-shrink:0;font-size:10px}
+.ebar-track{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.ebar-fill{height:100%;border-radius:3px}
+.ebar-pct{font-family:var(--mono);font-size:10px;width:28px;text-align:right}
+.ptable{width:100%;font-size:11px;border-collapse:collapse}
+.ptable th{font-family:var(--cinzel);font-size:8px;color:var(--txt3);letter-spacing:.1em;padding:6px 8px;text-align:left;border-bottom:1px solid var(--b)}
+.ptable td{padding:7px 8px;font-family:var(--mono);border-bottom:1px solid rgba(11,200,208,.03);color:var(--txt2)}
+.ptable tr:last-child td{border:none}
+.big-score-section{text-align:center;padding:80px 0;background:linear-gradient(180deg,transparent,var(--bg2),transparent)}
+.big-score{font-family:var(--deco);font-size:clamp(80px,14vw,140px);font-weight:700;line-height:1;background:linear-gradient(135deg,var(--tiff),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.big-score-label{font-family:var(--cinzel);font-size:14px;letter-spacing:.2em;color:var(--txt3);margin-bottom:24px}
+.rank-grid{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.rank-card{background:var(--card);border:1px solid var(--b);border-radius:12px;padding:20px 16px;text-align:center;min-width:120px;transition:all .2s}
+.rank-card:hover{border-color:var(--b2);transform:translateY(-2px)}
+.rank-card.active-rank{border-color:var(--tiff);background:var(--tiff3)}
+.rank-icon{font-size:26px;margin-bottom:8px}
+.rank-name{font-family:var(--cinzel);font-size:12px;font-weight:600;color:var(--txt);letter-spacing:.06em;margin-bottom:4px}
+.rank-xp{font-family:var(--mono);font-size:9px;color:var(--txt3)}
+.rank-card.active-rank .rank-xp{color:var(--tiff)}
+.quote-wrap{text-align:center;max-width:680px;margin:0 auto;padding:60px 0}
+.quote-mark{font-family:var(--deco);font-size:80px;line-height:.5;color:var(--tiff);opacity:.3;margin-bottom:16px}
+.quote-text{font-family:var(--display);font-size:clamp(17px,2.4vw,23px);font-weight:600;letter-spacing:-.02em;line-height:1.4;color:var(--txt);margin-bottom:24px}
+.quote-attr{font-family:var(--cinzel);font-size:11px;letter-spacing:.14em;color:var(--txt3)}
+.quote-attr span{color:var(--tiff)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:860px;margin:0 auto}
+.price-card{background:var(--card);border:1px solid var(--b);border-radius:14px;padding:26px;position:relative;overflow:hidden;transition:transform .2s}
+.price-card:hover{transform:translateY(-3px)}
+.price-card.featured{border-color:var(--tiff)}
+.price-card.featured::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--tiff),var(--pink))}
+.price-badge{position:absolute;top:16px;right:16px;background:linear-gradient(135deg,var(--tiff),var(--pink));color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:20px;font-family:var(--cinzel);letter-spacing:.08em}
+.price-rank{font-family:var(--cinzel);font-size:9px;color:var(--txt3);letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.price-name{font-family:var(--deco);font-size:18px;font-weight:700;color:var(--txt);margin-bottom:16px}
+.price-amount{font-family:var(--mono);font-size:32px;font-weight:500;line-height:1;color:var(--txt);margin-bottom:4px}
+.price-period{font-size:12px;color:var(--txt3);margin-bottom:20px}
+.price-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.price-list li{font-size:12px;color:var(--txt2);display:flex;align-items:flex-start;gap:7px;line-height:1.4}
+.price-list li::before{content:'✓';color:var(--tiff);flex-shrink:0;margin-top:1px}
+.price-list li.na{color:var(--txt3)}.price-list li.na::before{content:'—';color:var(--txt3)}
+.final-cta{text-align:center;padding:100px 0;position:relative}
+.final-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(11,200,208,.06) 0%,transparent 70%);pointer-events:none}
+.final-h{font-family:var(--display);font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:12px}
+.final-h span{background:linear-gradient(135deg,var(--tiff),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.final-sub{font-family:var(--cinzel);font-size:13px;letter-spacing:.12em;color:var(--txt3);margin-bottom:40px}
+.final-form{display:flex;gap:8px;justify-content:center;max-width:440px;margin:0 auto;flex-wrap:wrap}
+.waitlist-count{font-family:var(--mono);font-size:12px;color:var(--tiff);margin-top:14px}
+.success-msg{display:none;text-align:center;padding:14px 24px;background:rgba(11,200,208,.08);border:1px solid var(--b2);border-radius:10px;max-width:400px;margin:12px auto 0}
+.success-msg.show{display:block}
+.success-msg p{font-family:var(--cinzel);font-size:12px;color:var(--tiff);letter-spacing:.06em}
+footer{background:var(--bg2);border-top:1px solid var(--b);padding:40px 0}
+.footer-inner{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+.footer-disclaimer{font-size:11px;color:var(--txt3);line-height:1.6;max-width:440px;margin-top:10px}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.footer-link{font-family:var(--cinzel);font-size:10px;color:var(--txt3);letter-spacing:.1em;text-decoration:none;transition:color .15s}
+.footer-link:hover{color:var(--txt2)}
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .preview-card{transform:none}.preview-card:hover{transform:none}
+  .features-grid{grid-template-columns:1fr}
+  .problem-grid{grid-template-columns:1fr}
+  .sneak-stats{grid-template-columns:repeat(2,1fr)}
+  .sneak-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .nav-link{display:none}
+}
+@media(max-width:480px){
+  .hero-form,.final-form{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="amb-wrap"><div class="amb1"></div><div class="amb2"></div></div>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="nav-eagle">🦅</div>
+      <div class="nav-name">TradeRome</div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#preview">Preview</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-cta" href="#signup">Get Early Access</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-label fade-up">Early access — limited spots</div>
+        <h1 class="hero-h1 fade-up d1">Rome wasn't<br>built in <span>a day.</span></h1>
+        <h2 class="hero-h2 fade-up d2">Neither is your trading career.</h2>
+        <p class="hero-sub fade-up d3">TradeRome is the AI coach that analyzes your psychology — not the market. Track discipline, catch emotional mistakes, and become the trader you know you can be.</p>
+        <div class="hero-form fade-up d3" id="heroForm">
+          <input class="hero-input" type="email" placeholder="your@email.com" id="heroEmail">
+          <button class="hero-btn" onclick="submitEmail('heroEmail','heroSuccess')">Join the Empire →</button>
+        </div>
+        <div class="success-msg" id="heroSuccess"><p>⚔ Welcome to the empire. We'll email you at launch.</p></div>
+        <p class="hero-note fade-up d4"><span>Zero financial advice.</span> 100% behavioral focus. Free to start.</p>
+        <div class="hero-stats fade-up d4">
+          <div><div class="hero-stat-num" style="color:var(--tiff)">7.4/10</div><div class="hero-stat-lbl">Avg discipline score</div></div>
+          <div><div class="hero-stat-num" style="color:var(--pink)">92%</div><div class="hero-stat-lbl">Improve in 30 days</div></div>
+          <div><div class="hero-stat-num" style="color:var(--gold)">12</div><div class="hero-stat-lbl">Day avg streak</div></div>
+        </div>
+      </div>
+      <div class="preview-wrap fade-up d2">
+        <div class="preview-glow"></div>
+        <div class="preview-card">
+          <div class="preview-topbar">
+            <div class="preview-dots">
+              <div class="preview-dot" style="background:#FF5F57"></div>
+              <div class="preview-dot" style="background:#FFBD2E"></div>
+              <div class="preview-dot" style="background:#28CA41"></div>
+            </div>
+            <div class="preview-title">TradeRome · The Forum</div>
+          </div>
+          <div class="preview-body">
+            <div class="preview-stats">
+              <div class="pstat" style="border-top-color:var(--tiff)"><div class="pstat-val" style="color:var(--tiff)">+$4,280</div><div class="pstat-lbl">P&L Month</div></div>
+              <div class="pstat" style="border-top-color:var(--pink)"><div class="pstat-val" style="color:var(--pink)">64.2%</div><div class="pstat-lbl">Win Rate</div></div>
+              <div class="pstat" style="border-top-color:var(--gold)"><div class="pstat-val" style="color:var(--gold)">2.14</div><div class="pstat-lbl">Profit Factor</div></div>
+            </div>
+            <div class="preview-ai">
+              <div class="pai-lbl">🦅 Mirror Insight · Today</div>
+              <div class="pai-head">Solid session — one crack in the armor</div>
+              <div class="pai-body">Your ES longs showed textbook patience. One NQ trade taken 4 minutes after a loss with no real setup. That's the pattern costing you the most.</div>
+              <div class="pai-flags">
+                <span class="pf pf-g">✓ No overtrading</span>
+                <span class="pf pf-r">⚠ 1 tilt trade</span>
+                <span class="pf pf-a">🔥 12 day streak</span>
+              </div>
+            </div>
+            <div class="score-rings">
+              <div class="sring"><div class="sring-val" style="color:var(--tiff)">7.4</div><div class="sring-lbl">Discipline</div><div class="sring-bar"><div class="sring-fill" style="width:74%;background:var(--tiff)"></div></div></div>
+              <div class="sring"><div class="sring-val" style="color:var(--pink)">6.5</div><div class="sring-lbl">Consistency</div><div class="sring-bar"><div class="sring-fill" style="width:65%;background:var(--pink)"></div></div></div>
+              <div class="sring"><div class="sring-val" style="color:var(--gold)">8.1</div><div class="sring-lbl">Patience</div><div class="sring-bar"><div class="sring-fill" style="width:81%;background:var(--gold)"></div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item"><div class="marquee-dot"></div>AI Behavioral Coaching</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Discipline Score Tracking</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Revenge Trade Detection</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Emotion vs Win Rate</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Daily AI Summaries</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Legion Rank System</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Setup Analytics</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Screenshot Archive</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>AI Behavioral Coaching</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Discipline Score Tracking</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Revenge Trade Detection</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Emotion vs Win Rate</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Daily AI Summaries</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Legion Rank System</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Setup Analytics</div>
+    <div class="marquee-item"><div class="marquee-dot"></div>Screenshot Archive</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem fade-up">
+  <div class="container">
+    <p class="problem-statement">You don't have a <span>strategy</span> problem.<br>You have a <span>psychology</span> problem.</p>
+    <div class="problem-grid">
+      <div class="problem-card pc-red">
+        <div class="prob-icon">🔄</div>
+        <div class="prob-h">You revenge trade and don't notice until it's too late</div>
+        <div class="prob-p">Your own data shows 11% win rate on trades placed within 4 minutes of a loss. The market didn't beat you. Your reaction did.</div>
+      </div>
+      <div class="problem-card pc-amber">
+        <div class="prob-icon">📊</div>
+        <div class="prob-h">You track P&L but never track your decisions</div>
+        <div class="prob-p">Every journal tracks what you made. None of them track why you traded the way you did — until now.</div>
+      </div>
+      <div class="problem-card pc-tiff">
+        <div class="prob-icon">🧠</div>
+        <div class="prob-h">You know your rules but still break them</div>
+        <div class="prob-p">Knowing what to do isn't the problem. Having a system that catches you in the moment is. That's what your AI coach is for.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:60px">
+      <div class="fade-up">
+        <div class="section-tag">Features</div>
+        <div class="section-h">Your AI coach knows your patterns <em>before you do</em></div>
+        <p class="section-sub">After 30 trades, TradeRome has a behavioral fingerprint of your trading psychology. The longer you use it, the more personalized the coaching.</p>
+      </div>
+      <div class="fade-up d2" style="display:flex;flex-direction:column;gap:10px">
+        <div style="background:var(--card);border:1px solid var(--b);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:18px">⚔</div>
+          <div><div style="font-family:var(--cinzel);font-size:11px;color:var(--tiff);letter-spacing:.08em;margin-bottom:2px">Discipline Score</div><div style="font-size:12px;color:var(--txt2)">Scored 1–10 on every trade. Not just your P&L.</div></div>
+          <div style="font-family:var(--mono);font-size:24px;color:var(--tiff);margin-left:auto;font-weight:500">7.4</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--b);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:18px">🪞</div>
+          <div><div style="font-family:var(--cinzel);font-size:11px;color:var(--pink);letter-spacing:.08em;margin-bottom:2px">Behavioral Flags</div><div style="font-size:12px;color:var(--txt2)">Revenge trading, FOMO, overtrading — detected automatically.</div></div>
+          <div style="font-family:var(--cinzel);font-size:9px;color:var(--loss);background:rgba(255,107,138,.1);border:1px solid rgba(255,107,138,.2);padding:3px 8px;border-radius:4px;margin-left:auto;white-space:nowrap">revenge ⚠</div>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--b);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px">
+          <div style="font-size:18px">🔥</div>
+          <div><div style="font-family:var(--cinzel);font-size:11px;color:var(--gold);letter-spacing:.08em;margin-bottom:2px">Conquest Streak</div><div style="font-size:12px;color:var(--txt2)">Gamified discipline — rank from Recruit to Emperor.</div></div>
+          <div style="font-family:var(--mono);font-size:22px;color:var(--gold);margin-left:auto;font-weight:500">12</div>
+        </div>
+      </div>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card fade-up"><div class="feat-icon fi-t">🤖</div><div class="feat-h">AI Trade Analysis</div><p class="feat-p">Every trade gets reviewed by your AI coach. Discipline score, emotional flags, coaching feedback, and one specific behavioral improvement. Powered by GPT-4o.</p><div class="feat-tags"><span class="ftag ftag-t">per trade</span><span class="ftag ftag-t">gpt-4o</span><span class="ftag ftag-t">instant</span></div></div>
+      <div class="feat-card fade-up d1"><div class="feat-icon fi-p">📅</div><div class="feat-h">Daily Dispatch</div><p class="feat-p">End-of-day AI summary of your full session. Discipline score, best decision, worst decision, and three concrete improvements for tomorrow. Emailed to you automatically.</p><div class="feat-tags"><span class="ftag ftag-p">daily email</span><span class="ftag ftag-p">auto-generated</span></div></div>
+      <div class="feat-card fade-up d2"><div class="feat-icon fi-g">🧠</div><div class="feat-h">Emotion Analytics</div><p class="feat-p">Track your win rate against your emotional state before every trade. Calm: 78%. Tilt: 11%. The data will shock you into changing your approach.</p><div class="feat-tags"><span class="ftag ftag-g">6 emotions</span><span class="ftag ftag-g">win rate correlation</span></div></div>
+      <div class="feat-card fade-up d3"><div class="feat-icon fi-b">🏛</div><div class="feat-h">Legion Rank System</div><p class="feat-p">Earn XP for disciplined sessions. Rank up from Recruit to Legionnaire, Centurion, General, and Emperor. Every session is a brick in your empire.</p><div class="feat-tags"><span class="ftag ftag-t">5 ranks</span><span class="ftag ftag-t">gamified</span><span class="ftag ftag-t">streaks</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BIG SCORE -->
+<section class="big-score-section fade-up">
+  <div class="container">
+    <div class="section-tag" style="justify-content:center;margin-bottom:20px">The metric that changes everything</div>
+    <div class="big-score">7.4</div>
+    <div class="big-score-label">Your Daily Discipline Score</div>
+    <p style="font-size:15px;color:var(--txt2);max-width:500px;margin:0 auto;line-height:1.7;text-align:center">Not your P&L. Not your win rate. Your discipline score. Because a losing day with disciplined decisions is more valuable than a winning day driven by luck.</p>
+  </div>
+</section>
+
+<!-- APP SNEAK PEEK -->
+<section id="preview">
+  <div class="container">
+    <div class="fade-up" style="text-align:center;margin-bottom:40px">
+      <div class="section-tag" style="justify-content:center">Sneak peek</div>
+      <div class="section-h" style="text-align:center">Inside the app</div>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Click each tab to explore TradeRome before it launches.</p>
+    </div>
+    <div class="sneak-panel-outer fade-up d1">
+      <div class="sneak-tabs">
+        <button class="stab on" onclick="switchTab('forum',this)">The Forum</button>
+        <button class="stab" onclick="switchTab('mirror',this)">Your Mirror</button>
+        <button class="stab" onclick="switchTab('analytics',this)">Analytics</button>
+      </div>
+      <!-- Forum -->
+      <div class="sneak-body on" id="tab-forum">
+        <div class="sneak-stats">
+          <div class="ssc" style="border-top-color:var(--tiff)"><div class="ssc-lbl">P&L Month</div><div class="ssc-val" style="color:var(--tiff)">+$4,280</div></div>
+          <div class="ssc" style="border-top-color:var(--pink)"><div class="ssc-lbl">Win Rate</div><div class="ssc-val" style="color:var(--pink)">64.2%</div></div>
+          <div class="ssc" style="border-top-color:var(--gold)"><div class="ssc-lbl">Profit Factor</div><div class="ssc-val" style="color:var(--gold)">2.14</div></div>
+          <div class="ssc"><div class="ssc-lbl">Avg Winner</div><div class="ssc-val" style="color:var(--tiff2)">$340</div></div>
+          <div class="ssc" style="border-top-color:var(--loss)"><div class="ssc-lbl">Max Drawdown</div><div class="ssc-val" style="color:var(--loss)">-$820</div></div>
+        </div>
+        <div class="sneak-grid">
+          <div class="sneak-sub-panel">
+            <div class="sp-head">Today's Battles</div>
+            <div class="sp-body">
+              <table class="ptable">
+                <thead><tr><th>Ticker</th><th>Dir</th><th>P&L</th><th>Score</th><th>Flag</th></tr></thead>
+                <tbody>
+                  <tr><td style="color:var(--txt);font-family:var(--cinzel)">ES</td><td style="color:var(--tiff)">LONG</td><td style="color:var(--tiff)">+$1,068</td><td style="color:var(--tiff)">9/10</td><td style="color:var(--tiff);font-size:9px">clean</td></tr>
+                  <tr><td style="color:var(--txt);font-family:var(--cinzel)">NQ</td><td style="color:var(--loss)">SHORT</td><td style="color:var(--loss)">-$315</td><td style="color:var(--gold)">5/10</td><td style="color:var(--gold);font-size:9px">fomo</td></tr>
+                  <tr><td style="color:var(--txt);font-family:var(--cinzel)">ES</td><td style="color:var(--loss)">SHORT</td><td style="color:var(--loss)">-$487</td><td style="color:var(--loss)">3/10</td><td style="color:var(--loss);font-size:9px">revenge</td></tr>
+                  <tr><td style="color:var(--txt);font-family:var(--cinzel)">ES</td><td style="color:var(--tiff)">LONG</td><td style="color:var(--tiff)">+$640</td><td style="color:var(--tiff)">9/10</td><td style="color:var(--tiff);font-size:9px">clean</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="sneak-sub-panel">
+            <div class="sp-head">Discipline Scores · Today</div>
+            <div class="sp-body">
+              <div class="score-rings" style="margin-top:0;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:10px;font-size:12px">
+                  <span style="color:var(--txt2);width:80px;font-family:var(--cinzel);font-size:10px;letter-spacing:.06em">Discipline</span>
+                  <div style="flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;width:74%;background:var(--tiff);border-radius:3px"></div></div>
+                  <span style="font-family:var(--mono);color:var(--tiff);font-size:12px;min-width:28px;text-align:right">7.4</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="color:var(--txt2);width:80px;font-family:var(--cinzel);font-size:10px;letter-spacing:.06em">Consistency</span>
+                  <div style="flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;width:65%;background:var(--pink);border-radius:3px"></div></div>
+                  <span style="font-family:var(--mono);color:var(--pink);font-size:12px;min-width:28px;text-align:right">6.5</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="color:var(--txt2);width:80px;font-family:var(--cinzel);font-size:10px;letter-spacing:.06em">Patience</span>
+                  <div style="flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden"><div style="height:100%;width:81%;background:var(--gold);border-radius:3px"></div></div>
+                  <span style="font-family:var(--mono);color:var(--gold);font-size:12px;min-width:28px;text-align:right">8.1</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Mirror -->
+      <div class="sneak-body" id="tab-mirror">
+        <div class="sneak-grid">
+          <div class="sneak-sub-panel">
+            <div class="sp-head">General's Coaching Report</div>
+            <div class="sp-body">
+              <div style="background:linear-gradient(135deg,var(--bg),rgba(11,200,208,.05));border:1px solid var(--b2);border-radius:8px;padding:14px;margin-bottom:12px;position:relative">
+                <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--tiff),var(--pink),transparent)"></div>
+                <div style="font-family:var(--cinzel);font-size:8px;color:var(--tiff);letter-spacing:.18em;margin-bottom:6px">COACHING FEEDBACK</div>
+                <div style="font-family:var(--display);font-size:13px;font-weight:600;color:var(--txt);margin-bottom:6px">Solid session — one crack in the armor</div>
+                <div style="font-size:11px;color:var(--txt2);line-height:1.6">Your ES long positions showed excellent patience. Trade #4 was taken 4 minutes after a loss — no setup, just emotion. The market didn't beat you. Your reaction did.</div>
+                <div style="display:flex;gap:4px;margin-top:8px;flex-wrap:wrap">
+                  <span class="pf pf-g">✓ Patient on winners</span>
+                  <span class="pf pf-r">⚠ 1 revenge trade</span>
+                  <span class="pf pf-a">⚠ 1 premature exit</span>
+                </div>
+              </div>
+              <div style="background:rgba(255,107,138,.07);border:1px solid rgba(255,107,138,.15);border-left:3px solid var(--loss);border-radius:0 8px 8px 0;padding:12px;font-size:11px;color:var(--txt2);line-height:1.6"><strong style="color:var(--loss);font-weight:500">Pattern Alert:</strong> 3rd Monday in a row — losing NQ trade immediately followed by reactive ES short. Win rate on these: 12%. Consider a 15-min cooldown rule after any loss.</div>
+            </div>
+          </div>
+          <div class="sneak-sub-panel">
+            <div class="sp-head">Win Rate by Emotion</div>
+            <div class="sp-body">
+              <div class="ebar"><div class="ebar-name">😌 Calm</div><div class="ebar-track"><div class="ebar-fill" style="width:78%;background:var(--tiff)"></div></div><div class="ebar-pct" style="color:var(--tiff)">78%</div></div>
+              <div class="ebar"><div class="ebar-name">🎯 Focused</div><div class="ebar-track"><div class="ebar-fill" style="width:72%;background:var(--pink)"></div></div><div class="ebar-pct" style="color:var(--pink)">72%</div></div>
+              <div class="ebar"><div class="ebar-name">🤩 Excited</div><div class="ebar-track"><div class="ebar-fill" style="width:44%;background:var(--gold)"></div></div><div class="ebar-pct" style="color:var(--gold)">44%</div></div>
+              <div class="ebar"><div class="ebar-name">😤 Frustrated</div><div class="ebar-track"><div class="ebar-fill" style="width:23%;background:var(--txt2)"></div></div><div class="ebar-pct">23%</div></div>
+              <div class="ebar" style="margin:0"><div class="ebar-name">😡 Tilt</div><div class="ebar-track"><div class="ebar-fill" style="width:11%;background:var(--loss)"></div></div><div class="ebar-pct" style="color:var(--loss)">11%</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Analytics -->
+      <div class="sneak-body" id="tab-analytics">
+        <div class="sneak-grid">
+          <div class="sneak-sub-panel">
+            <div class="sp-head">Setup Win Rates</div>
+            <div class="sp-body">
+              <div class="ebar"><div class="ebar-name">Breakout</div><div class="ebar-track"><div class="ebar-fill" style="width:76%;background:var(--tiff)"></div></div><div class="ebar-pct" style="color:var(--tiff)">76%</div></div>
+              <div class="ebar"><div class="ebar-name">Pullback</div><div class="ebar-track"><div class="ebar-fill" style="width:68%;background:var(--pink)"></div></div><div class="ebar-pct" style="color:var(--pink)">68%</div></div>
+              <div class="ebar"><div class="ebar-name">Trend cont.</div><div class="ebar-track"><div class="ebar-fill" style="width:63%;background:var(--gold)"></div></div><div class="ebar-pct" style="color:var(--gold)">63%</div></div>
+              <div class="ebar"><div class="ebar-name">Scalp</div><div class="ebar-track"><div class="ebar-fill" style="width:50%;background:var(--txt2)"></div></div><div class="ebar-pct">50%</div></div>
+              <div class="ebar" style="margin:0"><div class="ebar-name">Counter</div><div class="ebar-track"><div class="ebar-fill" style="width:26%;background:var(--loss)"></div></div><div class="ebar-pct" style="color:var(--loss)">26%</div></div>
+            </div>
+          </div>
+          <div class="sneak-sub-panel">
+            <div class="sp-head">P&L by Time of Day</div>
+            <div class="sp-body" style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:6px;align-items:center;font-size:10px"><span style="color:var(--txt3);font-family:var(--mono)">09:30</span><div style="height:14px;border-radius:3px;background:rgba(11,200,208,.5);width:82%"></div><span style="color:var(--tiff);font-family:var(--mono)">+$420</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:6px;align-items:center;font-size:10px"><span style="color:var(--txt3);font-family:var(--mono)">10:00</span><div style="height:14px;border-radius:3px;background:rgba(11,200,208,.65);width:92%"></div><span style="color:var(--tiff);font-family:var(--mono)">+$510</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:6px;align-items:center;font-size:10px"><span style="color:var(--txt3);font-family:var(--mono)">10:30</span><div style="height:14px;border-radius:3px;background:rgba(11,200,208,.35);width:62%"></div><span style="color:var(--tiff);font-family:var(--mono)">+$290</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:6px;align-items:center;font-size:10px"><span style="color:var(--txt3);font-family:var(--mono)">13:30</span><div style="height:14px;border-radius:3px;background:rgba(255,107,138,.4);width:42%"></div><span style="color:var(--loss);font-family:var(--mono)">-$180</span></div>
+              <div style="display:grid;grid-template-columns:44px 1fr 44px;gap:6px;align-items:center;font-size:10px"><span style="color:var(--txt3);font-family:var(--mono)">15:00</span><div style="height:14px;border-radius:3px;background:rgba(255,61,170,.45);width:75%"></div><span style="color:var(--pink);font-family:var(--mono)">+$380</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RANKS -->
+<section style="background:var(--bg2);border-top:1px solid var(--b);border-bottom:1px solid var(--b)">
+  <div class="container">
+    <div class="fade-up" style="text-align:center;margin-bottom:36px">
+      <div class="section-tag" style="justify-content:center">Gamification</div>
+      <div class="section-h" style="text-align:center;font-size:clamp(24px,3.5vw,38px)">Rank up your discipline</div>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Every disciplined session earns XP. Every consistent week moves you up a rank.</p>
+    </div>
+    <div class="rank-grid fade-up d1">
+      <div class="rank-card"><div class="rank-icon">🛡</div><div class="rank-name">Recruit</div><div class="rank-xp">0 XP</div></div>
+      <div class="rank-card"><div class="rank-icon">⚔</div><div class="rank-name">Legionnaire</div><div class="rank-xp">1,000 XP</div></div>
+      <div class="rank-card active-rank"><div class="rank-icon">🦅</div><div class="rank-name">Centurion</div><div class="rank-xp">5,000 XP · You are here</div></div>
+      <div class="rank-card"><div class="rank-icon">🏛</div><div class="rank-name">General</div><div class="rank-xp">10,000 XP</div></div>
+      <div class="rank-card"><div class="rank-icon">👑</div><div class="rank-name" style="background:linear-gradient(135deg,var(--tiff),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Emperor</div><div class="rank-xp">25,000 XP</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section>
+  <div class="container">
+    <div class="quote-wrap fade-up">
+      <div class="quote-mark">"</div>
+      <div class="quote-text">I thought I had a strategy problem. TradeRome showed me I had a psychology problem. I was revenge trading every Friday and didn't even notice. In 30 days, my drawdown dropped 40%.</div>
+      <div class="quote-attr">— Beta tester · <span>ES Futures trader</span> · 8 years experience</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--bg2);border-top:1px solid var(--b)">
+  <div class="container">
+    <div class="fade-up" style="text-align:center;margin-bottom:48px">
+      <div class="section-tag" style="justify-content:center">Pricing</div>
+      <div class="section-h" style="text-align:center">Start free. Scale when ready.</div>
+      <p class="section-sub" style="margin:0 auto;text-align:center">No credit card to start. Upgrade when you want unlimited AI coaching.</p>
+    </div>
+    <div class="pricing-grid fade-up d1">
+      <div class="price-card">
+        <div class="price-rank">Free forever</div>
+        <div class="price-name">Recruit</div>
+        <div class="price-amount">$0</div>
+        <div class="price-period">forever · no card needed</div>
+        <ul class="price-list">
+          <li>10 trades per month</li>
+          <li>Basic P&L dashboard</li>
+          <li>Win rate & profit factor</li>
+          <li>Notes & tags</li>
+          <li class="na">AI trade analysis</li>
+          <li class="na">Daily summaries</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-rank">Pro plan</div>
+        <div class="price-name">Centurion</div>
+        <div class="price-amount">$29</div>
+        <div class="price-period">/month · $19/mo billed annually</div>
+        <ul class="price-list">
+          <li>Unlimited trades</li>
+          <li>AI analysis on every trade</li>
+          <li>Daily AI discipline summary</li>
+          <li>Screenshot uploads</li>
+          <li>Emotion & setup analytics</li>
+          <li>Weekly email report</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="price-rank">Elite plan</div>
+        <div class="price-name">Emperor</div>
+        <div class="price-amount">$79</div>
+        <div class="price-period">/month · $59/mo billed annually</div>
+        <ul class="price-list">
+          <li>Everything in Centurion</li>
+          <li>Unlimited AI analyses</li>
+          <li>Unlimited storage</li>
+          <li>AI voice coaching (soon)</li>
+          <li>Broker import (soon)</li>
+          <li>Priority support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="signup" class="final-cta">
+  <div class="final-glow"></div>
+  <div class="container">
+    <div class="section-tag fade-up" style="justify-content:center">Early access</div>
+    <h2 class="final-h fade-up d1">Your empire<br>starts <span>today.</span></h2>
+    <p class="final-sub fade-up d2">Join the waitlist. Get early access + 30 days free Pro when we launch.</p>
+    <div class="final-form fade-up d3">
+      <input class="hero-input" type="email" placeholder="your@email.com" id="finalEmail" style="min-width:240px">
+      <button class="hero-btn" onclick="submitEmail('finalEmail','finalSuccess')">Join the Empire →</button>
+    </div>
+    <div class="success-msg" id="finalSuccess"><p>⚔ Welcome to the empire. We'll email you at launch.</p></div>
+    <div class="waitlist-count fade-up d4" id="waitlistCount">🔥 Loading...</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div class="nav-eagle" style="width:28px;height:28px;font-size:12px">🦅</div>
+          <div class="nav-name" style="font-size:13px">TradeRome</div>
+        </div>
+        <p class="footer-disclaimer">TradeRome is an educational journaling and behavioral analytics tool. It does not provide financial advice, investment recommendations, or trading signals. Past behavioral patterns do not guarantee future trading performance. Trade responsibly.</p>
+        <p style="font-family:var(--cinzel);font-size:10px;color:var(--txt3);margin-top:14px;letter-spacing:.14em">S · P · Q · R</p>
+      </div>
+      <div class="footer-links">
+        <a class="footer-link" href="#features">Features</a>
+        <a class="footer-link" href="#preview">Preview</a>
+        <a class="footer-link" href="#pricing">Pricing</a>
+        <a class="footer-link" href="#signup">Early Access</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') })
+}, { threshold: 0.1 })
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el))
+
+function switchTab(id, btn){
+  document.querySelectorAll('.sneak-body').forEach(b => b.classList.remove('on'))
+  document.querySelectorAll('.stab').forEach(t => t.classList.remove('on'))
+  document.getElementById('tab-'+id).classList.add('on')
+  btn.classList.add('on')
+}
+
+const emails = JSON.parse(localStorage.getItem('tr_emails')||'[]')
+
+function submitEmail(inputId, successId){
+  const input = document.getElementById(inputId)
+  const email = input.value.trim()
+  if(!email || !email.includes('@')){
+    input.style.borderColor='var(--loss)'
+    setTimeout(()=>input.style.borderColor='',1500)
+    return
+  }
+  fetch('https://www.traderome.io/api/waitlist', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  })
+  .then(() => {
+    input.value = ''
+    document.getElementById(successId).classList.add('show')
+    updateCount()
+  })
+  .catch(() => {
+    input.value = ''
+    document.getElementById(successId).classList.add('show')
+    updateCount()
+  })
+}
+
+function updateCount(){
+  const n = 847 + emails.length
+  document.getElementById('waitlistCount').textContent = '🔥 ' + n.toLocaleString() + ' traders on the early access list'
+}
+
+updateCount()
+
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.borderBottomColor = window.scrollY > 60 ? 'rgba(11,200,208,.14)' : 'var(--b)'
+})
+</script>
+</body>
+</html>
