@@ -647,7 +647,7 @@ function submitEmail(inputId, successId){
     setTimeout(()=>input.style.borderColor='',1500)
     return
   }
-  fetch('https://www.traderome.io/api/waitlist', {
+  fetch('https://traderome-app.vercel.app/api/waitlist', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email })
